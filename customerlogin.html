@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Admin Dashboard</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+					 
+					 
+					 
+
+
+
+          <!-- Content Row -->
+          <div class="row">
+
+            <!-- Content Column -->
+            <div class="col-lg-12 mb-4">
+
+              <!-- Project Card Example -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Customer Log In</h6>
+                </div>
+                <div class="card-body">
+          <form id = "contact-form" class="form-horizontal" action="get_response.php" method="post" >
+          <input type="hidden" value="insert_Customer" name="method_name">
+            <div class="form-group">
+            <label class="control-label col-sm-2" >ID:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="name" placeholder="Enter ID">
+            </div>
+            </div>
+            <div class="form-group">
+            <label class="control-label col-sm-2" >Password:</label>
+            <div class="col-sm-10">
+              <input type="Number" class="form-control" name="mobile" placeholder="Enter password">
+            </div>
+            </div>
+            
+           
+            <div class="form-group"> 
+						<div class="col-sm-offset-2 col-sm-10">
+						  <div class="checkbox">
+							<label><input type="checkbox"> Remember me</label>
+						  </div>
+						</div>
+					  </div>
+					  <div class="form-group"> 
+						<div class="col-sm-offset-2 col-sm-2">
+						  <button type="submit" class="btn btn-primary btn-user btn-block">Submit</button>
+						</div>
+						<!--/ <div class="alert alert-success response_msg">
+									  <strong>Success!</strong> Indicates a successful or positive action.
+									  </div>
+									  <div class="alert alert-danger response_msg_alrt" role="alert">
+									  This is a danger alert—check it out!
+									  </div>-->
+					  </div>
+					</form>
+                </div>
+              </div>
+
+            </div>
+
+            
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+
+
+$(".response_msg").css("display","none");
+$(".response_msg_alrt").css("display","none");
+
+$("#contact-form").on("submit",function(e){
+e.preventDefault();
+if($("#contact-form [name='name']").val() === '')
+{
+$("#contact-form [name='name']").css("border","1px solid red");
+}
+else if($("#contact-form [name='mobile']").val() === '')
+{
+$("#contact-form [name='mobile']").css("border","1px solid red");
+}
+else if($("#contact-form [name='address']").val() === '')
+{
+$("#contact-form [name='address']").css("border","1px solid red");
+}
+else
+{
+$("#loading-img").css("display","block");
+var sendData = $( this ).serialize();
+$.ajax({
+type: "POST",
+url: "get_response.php",
+data: sendData,
+success: function(data){
+var jsonresponse  = JSON.parse( data );
+if(jsonresponse.status=="true")
+{
+$(".response_msg").text(jsonresponse.msg);
+$(".response_msg").slideDown().fadeOut(3000);
+$("#contact-form").find("input[type=text], input[type=email],input[type=password], textarea").val("");
+document.getElementById("btnsubmit").disabled = true;
+window.setTimeout(function(){
+        window.location.href = "update_manager.php";
+    }, 3000);
+
+}
+else  
+{
+$(".response_msg_alrt").text(jsonresponse.msg);
+$(".response_msg_alrt").slideDown().fadeOut(3000);
+}
+
+}
+});
+}
+
+});
+
+$("#contact-form input").blur(function(){
+var checkValue = $(this).val();
+if(checkValue != '')
+{
+$(this).css("border","1px solid #eeeeee");
+}
+});
+});
+
+</script>
+
+</body>
+
+</html>
+
